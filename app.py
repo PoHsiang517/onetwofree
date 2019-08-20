@@ -22,7 +22,7 @@ line_bot_api = LineBotApi(ACCESS_TOKEN)
 handler = WebhookHandler(SECRET)
 # handler = WebhookHandler('476c26b19e949a1f5d9721bb4cd9583d')
 
-＠app.route("/")
+@app.route("/")
 def index():
     return "<p>Welcome to onetwofree LineBot Demo</p>"
 
