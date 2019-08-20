@@ -1,10 +1,4 @@
-import os
-import apiai
-import json
-import requests
-import random
-
-from flask import Flask, request, abort
+﻿from flask import Flask, request, abort
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -12,59 +6,37 @@ from linebot import (
 from linebot.exceptions import (
     InvalidSignatureError
 )
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-    ImageSendMessage,
-    LocationMessage,
-    TemplateSendMessage, ButtonsTemplate, URITemplateAction,
-)
+from linebot.models import *
 
 app = Flask(__name__)
 
-# 將TOKEN改輸入在heroku網站上的Config Vars
-ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN')
-SECRET = os.environ.get('SECRET')
-# GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-# DIALOGFLOW_CLIENT_ACCESS_TOKEN = os.environ.get('DIALOGFLOW_CLIENT_ACCESS_TOKEN')
-
-line_bot_api = LineBotApi(ACCESS_TOKEN)
-handler = WebhookHandler(SECRET)
-# line_bot_api = LineBotApi('')
-# handler = WebhookHandler('')
-
-
-@app.route("/")
-def home():
-    return 'home OK'
+# Channel Access Token
+line_bot_api = LineBotApi('YOB5RBTArIkHRWTWlXdc+IBwbFnwRxSPzHMNHurl0+/0xJ8bKVl2lcpAp7XE2sBM7l3YD4V6VBW+A+3g/CkBnshn7tF1ImmS8jivWt/EUDiGO14crpibn5UajQJPKNjbsB+47KRbjZR8X/F53Xs44AdB04t89/1O/w1cDnyilFU=')
+# Channel Secret
+handler = WebhookHandler('476c26b19e949a1f5d9721bb4cd9583d')
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
-
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
-
     # handle webhook body
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
-        print("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
-
     return 'OK'
-
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text="這是自動回覆訊息： " + event.message.text))
+    message = TextSendMessage(text=event.message.text)
+    line_bot_api.reply_message(event.reply_token, message)
 
-
+import os
 if __name__ == "__main__":
-    app.run()
-    
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
