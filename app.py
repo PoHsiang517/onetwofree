@@ -58,8 +58,8 @@ def is_alphabet(uchar):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    if msg == "關鍵字":
-        line_bot_api.reply_message(event.reply_token, "你輸入了關鍵字!!")
+    if msg == "TEST":
+        line_bot_api.reply_message(event.reply_token, "你輸入了TEST!!")
     else:
         message = TextSendMessage(text = "你輸入的訊息是:　" + event.message.text)
         line_bot_api.reply_message(event.reply_token, message)
