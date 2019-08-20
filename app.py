@@ -14,11 +14,14 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
+    ImageSendMessage,
+    LocationMessage,
+    TemplateSendMessage, ButtonsTemplate, URITemplateAction,
 )
 
 app = Flask(__name__)
-# 將TOKEN改輸入在heroku網站上的Config Vars
 
+# 將TOKEN改輸入在heroku網站上的Config Vars
 ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN')
 SECRET = os.environ.get('SECRET')
 # GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
