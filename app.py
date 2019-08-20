@@ -47,6 +47,7 @@ def callback():
 def handle_message(event):
     msg = event.message.text #message from user
     if msg == "TEST":
+        #無法正常顯示，待處理 2019.08.20 23:33
         message = "你輸入了TEST!!"
         line_bot_api.reply_message(event.reply_token, message)
     else:
