@@ -11,9 +11,17 @@ from linebot.models import (
 )
 
 app = Flask(__name__)
+# 將TOKEN改輸入在heroku網站上的Config Vars
 
-line_bot_api = LineBotApi('swpST/tCuk/g6laDEpAN4GY4Nk6BqHtLIPInJXNTAEVN/zNbjUf4S2cEmuBsCysN7l3YD4V6VBW+A+3g/CkBnshn7tF1ImmS8jivWt/EUDinU3Cag2A/emS6p3UfwbLonmzbRTMFcq9IoyzVBo9LZAdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('476c26b19e949a1f5d9721bb4cd9583d')
+ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN')
+SECRET = os.environ.get('SECRET')
+# GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+# DIALOGFLOW_CLIENT_ACCESS_TOKEN = os.environ.get('DIALOGFLOW_CLIENT_ACCESS_TOKEN')
+
+line_bot_api = LineBotApi(ACCESS_TOKEN)
+handler = WebhookHandler(SECRET)
+# line_bot_api = LineBotApi('')
+# handler = WebhookHandler('')
 
 
 @app.route("/")
