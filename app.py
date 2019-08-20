@@ -1,3 +1,9 @@
+import os
+import apiai
+import json
+import requests
+import random
+
 from flask import Flask, request, abort
 
 from linebot import (
