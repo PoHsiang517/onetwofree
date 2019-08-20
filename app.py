@@ -22,6 +22,10 @@ line_bot_api = LineBotApi(ACCESS_TOKEN)
 handler = WebhookHandler(SECRET)
 # handler = WebhookHandler('476c26b19e949a1f5d9721bb4cd9583d')
 
+＠app.route("/")
+def index():
+    return "<p>Welcome to onetwofree LineBot Demo</p>"
+
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -36,6 +40,19 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     return 'OK'
+
+# ================= 客製區 Start =================
+def is_alphabet(uchar):
+    if ('\u0041' <= uchar<='\u005a') or ('\u0061' <= uchar<='\u007a'):
+        print('English')
+        return "en"
+    elif '\u4e00' <= uchar<='\u9fff':
+        #print('Chinese')
+        print('Chinese')
+        return "zh-tw"
+    else:
+        return "en"
+# ================= 客製區 End =================
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
