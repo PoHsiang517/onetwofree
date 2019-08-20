@@ -1,4 +1,5 @@
 ﻿import os
+import json
 
 from flask import Flask, request, abort
 
@@ -41,23 +42,10 @@ def callback():
         abort(400)
     return 'OK'
 
-# ================= 客製區 Start =================
-def is_alphabet(uchar):
-    if ('\u0041' <= uchar<='\u005a') or ('\u0061' <= uchar<='\u007a'):
-        print('English')
-        return "en"
-    elif '\u4e00' <= uchar<='\u9fff':
-        #print('Chinese')
-        print('Chinese')
-        return "zh-tw"
-    else:
-        return "en"
-# ================= 客製區 End =================
-
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message.text
+    msg = event.message.text #message from user
     if msg == "TEST":
         line_bot_api.reply_message(event.reply_token, "你輸入了TEST!!")
     else:
