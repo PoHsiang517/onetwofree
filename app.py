@@ -47,7 +47,8 @@ def callback():
 def handle_message(event):
     msg = event.message.text #message from user
     if msg == "TEST":
-        line_bot_api.reply_message(event.reply_token, "你輸入了TEST!!")
+        message = "你輸入了TEST!!"
+        line_bot_api.reply_message(event.reply_token, message)
     else:
         message = TextSendMessage(text = "你輸入的訊息是:　" + event.message.text)
         line_bot_api.reply_message(event.reply_token, message)
