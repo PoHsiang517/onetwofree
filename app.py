@@ -65,13 +65,12 @@ def handle_message(event):
     weather = re.compile(r"\w*天氣\w*") #使用re判斷輸入字串中是否含有特定字詞
     if weather.findall(event.message.text): #判斷list中是否有值，True表示有關鍵字，False表示沒有關鍵字則進到下一個判斷
         message = TextSendMessage("查詢天氣功能")
-        line_bot_api.reply_message(event.reply_token, message)
-    elif event.message.text == "人之初": #message from user #輸入必須為固定字詞
-        message = TextSendMessage("性本善")
-        line_bot_api.reply_message(event.reply_token, message)
+    elif event.message.text == "食譜": #message from user #輸入必須為固定字詞
+        message = TextSendMessage("請輸入要查詢的料理(例如:烘蛋)： ")
     else:
         message = TextSendMessage(text = "你輸入的訊息是:　" + event.message.text)
-        line_bot_api.reply_message(event.reply_token, message)
+
+    line_bot_api.reply_message(event.reply_token, message)
 
 import os
 if __name__ == "__main__":
