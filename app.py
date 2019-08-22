@@ -1,5 +1,6 @@
 ﻿import os
 import json
+import re
 
 from flask import Flask, request, abort
 
@@ -9,7 +10,11 @@ from linebot import (
 from linebot.exceptions import (
     InvalidSignatureError
 )
-from linebot.models import *
+
+from linebot.models import (
+    MessageEvent, JoinEvent, LeaveEvent, FollowEvent,
+    TextMessage, ImageMessage, AudioMessage, TextSendMessage, ImageSendMessage, StickerMessage
+)
 
 app = Flask(__name__)
 
@@ -23,9 +28,21 @@ line_bot_api = LineBotApi(ACCESS_TOKEN)
 handler = WebhookHandler(SECRET)
 # handler = WebhookHandler('476c26b19e949a1f5d9721bb4cd9583d')
 
+
+# re判斷輸入字串是否為數字
+
+def is_number(num):
+	pattern = re.compile(r"^[-+]?[-0-9]\d*\.\d*|[-+]?\.?[0-9]\d*$")
+	result = pattern.match(num)
+	if result:
+		return True
+	else:
+		return False
+#====================================================================
+
 @app.route("/")
 def index():
-    return "<p>Welcome to onetwofree LineBot Demo</p>"
+    return "<p>Welcome to onetwofree LineBot Demo</p><p>請用LINE測試本功能</p>"
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -45,10 +62,12 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message.text #message from user
-    if msg == "TEST":
-        #無法正常顯示，待處理 2019.08.20 23:33
-        message = "你輸入了TEST!!"
+    weather = re.compile(r"\w*天氣\w*") #使用re判斷輸入字串中是否含有特定字詞
+    if weather.findall(event.message.text): #判斷list中是否有值，True表示有關鍵字，False表示沒有關鍵字則進到下一個判斷
+        message = TextSendMessage("查詢天氣功能")
+        line_bot_api.reply_message(event.reply_token, message)
+    elif event.message.text == "人之初": #message from user #輸入必須為固定字詞
+        message = TextSendMessage("性本善")
         line_bot_api.reply_message(event.reply_token, message)
     else:
         message = TextSendMessage(text = "你輸入的訊息是:　" + event.message.text)
